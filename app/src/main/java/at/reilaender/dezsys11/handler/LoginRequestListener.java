@@ -26,7 +26,6 @@ public class LoginRequestListener implements RequestListener<ResponseEntity, Htt
             Intent intent = new Intent(mainActivity.getApplicationContext(), WelcomeActivity.class);
             intent.putExtra("user", responseEntity.getBody().toString());
             mainActivity.navigateUpTo(intent);
-
         });
     }
 

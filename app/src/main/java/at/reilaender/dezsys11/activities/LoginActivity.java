@@ -6,9 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import at.reilaender.dezsys11.R;
-import at.reilaender.dezsys11.handler.LoginButtonHandler;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -17,8 +17,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        final Button button = (Button) findViewById(R.id.w_button_login);
-        button.setOnClickListener(new LoginButtonHandler(this));
+        final Button button = (Button) findViewById(R.id.w_login_signup);
+        button.setOnClickListener((View view) -> navigateUpTo(new Intent(getApplicationContext(), RegisterActivity.class)));
     }
 
     @Override
