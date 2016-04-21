@@ -1,15 +1,20 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
     }
 }
+
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 repositories {
     jcenter()
+    mavenCentral()
 }
 
 android {
@@ -18,15 +23,15 @@ android {
 
     defaultConfig {
         applicationId "at.reilaender.dezsys11"
-        minSdkVersion 9
+        minSdkVersion 22
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {

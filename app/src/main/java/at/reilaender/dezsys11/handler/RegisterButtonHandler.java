@@ -1,16 +1,19 @@
 package at.reilaender.dezsys11.handler;
 
 import android.app.Activity;
+import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
 import at.reilaender.dezsys11.R;
+import at.reilaender.dezsys11.SendRegisterRequest;
 import at.reilaender.dezsys11.config.ServerConfig;
 import at.reilaender.dezsys11.entities.User;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -20,11 +23,9 @@ import java.util.concurrent.ExecutionException;
  */
 public class RegisterButtonHandler implements View.OnClickListener {
     final private Activity activity;
-    private RestTemplate restTemplate;
 
     public RegisterButtonHandler(Activity activity) {
         this.activity = activity;
-        this.restTemplate = new RestTemplate();
     }
 
     @Override
@@ -36,15 +37,7 @@ public class RegisterButtonHandler implements View.OnClickListener {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<String>(user.toString(), headers);
-        try {
-            ResponseEntity responseEntity = new at.reilaender.dezsys11.RegisterButtonHandler(httpEntity, ServerConfig.url).execute().get();
-            if(responseEntity != null)
-                System.out.println(responseEntity.getBody().toString());
-            // TODO responseBody irgendwo in der App ausgeben -> kurze infobox unten (diese schwarze die kurz da is und wieder verschwindet)
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        ResponseEntity responseEntity = null;
+        AsyncTask asyncTask = new SendRegisterRequest(httpEntity, ServerConfig.url, new RegisterRequestListener(this.activity)).execute();
     }
 }

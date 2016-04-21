@@ -1,6 +1,7 @@
 package at.reilaender.dezsys11;
 
 import android.os.AsyncTask;
+import at.reilaender.dezsys11.handler.RequestListener;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
@@ -10,23 +11,28 @@ import org.springframework.web.client.RestTemplate;
  * @author mreilaender
  * @version 20.04.2016
  */
-public class SendRegisterRequest extends AsyncTask<HttpEntity, Void, ResponseEntity> {
+public class SendRegisterRequest extends AsyncTask<HttpEntity, Void, Void> {
     private RestTemplate restTemplate;
-    private HttpEntity httpEntity;
+    private HttpEntity<String> httpEntity;
     private String url;
+    private RequestListener requestListener;
 
-    public SendRegisterRequest(HttpEntity httpEntity, String url) {
+    public SendRegisterRequest(HttpEntity<String> httpEntity, String url, RequestListener requestListener) {
         this.httpEntity = httpEntity;
         this.url = url;
         this.restTemplate = new RestTemplate();
+        this.requestListener = requestListener;
     }
 
     @Override
-    protected ResponseEntity doInBackground(HttpEntity... httpEntities) {
+    protected Void doInBackground(HttpEntity... httpEntities) {
+        ResponseEntity<String> responseEntity = null;
         try {
-            return this.restTemplate.postForEntity(this.url + "/register", this.httpEntity, String.class);
+            responseEntity = this.restTemplate.postForEntity(this.url + "/register", this.httpEntity, String.class);
+            this.requestListener.onSucess(responseEntity);
         } catch (HttpClientErrorException e) {
-            return null;
+            this.requestListener.onFailure(e);
         }
+        return null;
     }
 }
