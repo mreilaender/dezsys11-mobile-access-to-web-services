@@ -1,21 +1,24 @@
-package at.reilaender.dezsys11;
+package at.reilaender.dezsys11.activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import at.reilaender.dezsys11.handler.RegisterButtonHandler;
+import at.reilaender.dezsys11.R;
+import at.reilaender.dezsys11.handler.LoginButtonHandler;
 
-public class DEZSYS11 extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dezsys11);
+        setContentView(R.layout.login_activity);
 
-        final Button button = (Button) findViewById(R.id.w_button);
-        button.setOnClickListener(new RegisterButtonHandler(this));
+        final Button button = (Button) findViewById(R.id.w_button_login);
+        button.setOnClickListener(new LoginButtonHandler(this));
     }
 
     @Override
@@ -38,5 +41,12 @@ public class DEZSYS11 extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean navigateUpTo(@NonNull Intent intent) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        return false;
     }
 }

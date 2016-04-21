@@ -15,24 +15,24 @@ import org.springframework.http.ResponseEntity;
 
 /**
  * @author mreilaender
- * @version 20.04.2016
+ * @version 21.04.2016
  */
-public class RegisterButtonHandler implements View.OnClickListener {
+public class LoginButtonHandler implements View.OnClickListener {
     final private Activity activity;
 
-    public RegisterButtonHandler(Activity activity) {
+    public LoginButtonHandler(Activity activity) {
         this.activity = activity;
     }
 
     @Override
     public void onClick(View view) {
-        String username = ((EditText) this.activity.findViewById(R.id.tf_register_username)).getText().toString(),
-                email = ((EditText) this.activity.findViewById(R.id.tf_register_email)).getText().toString(),
-                password = ((EditText) this.activity.findViewById(R.id.tf_register_password)).getText().toString();
+        String email = ((EditText) this.activity.findViewById(R.id.tf_login_email)).getText().toString(),
+                password = ((EditText) this.activity.findViewById(R.id.tf_login_password)).getText().toString();
         User user = new User(email, password);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<String>(user.toString(), headers);
-        AsyncTask asyncTask = new SendLoginRequest(httpEntity, ServerConfig.url, new RegisterRequestListener(this.activity)).execute();
+        ResponseEntity responseEntity = null;
+        AsyncTask asyncTask = new SendLoginRequest(httpEntity, ServerConfig.url, new LoginRequestListener(this.activity)).execute();
     }
 }

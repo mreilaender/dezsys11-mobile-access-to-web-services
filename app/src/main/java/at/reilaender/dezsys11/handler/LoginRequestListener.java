@@ -1,7 +1,9 @@
 package at.reilaender.dezsys11.handler;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
+import at.reilaender.dezsys11.activities.WelcomeActivity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -9,25 +11,27 @@ import org.springframework.web.client.HttpClientErrorException;
  * @author mreilaender
  * @version 21.04.2016
  */
-public class RegisterRequestListener implements RequestListener<ResponseEntity, HttpClientErrorException> {
+public class LoginRequestListener implements RequestListener<ResponseEntity, HttpClientErrorException> {
     private Activity mainActivity;
     private AlertDialog alertDialog;
 
-    public RegisterRequestListener(Activity mainActivity) {
-        this.mainActivity = mainActivity;
+    public LoginRequestListener(Activity activity) {
+        this.mainActivity = activity;
         this.alertDialog = new AlertDialog.Builder(this.mainActivity).create();
     }
 
     @Override
-    public void onSucess(final ResponseEntity responseEntity) {
+    public void onSucess(ResponseEntity responseEntity) {
         this.mainActivity.runOnUiThread(() -> {
-            alertDialog.setMessage(responseEntity.getBody().toString());
-            alertDialog.show();
+            Intent intent = new Intent(mainActivity.getApplicationContext(), WelcomeActivity.class);
+            intent.putExtra("user", responseEntity.getBody().toString());
+            mainActivity.navigateUpTo(intent);
+
         });
     }
 
     @Override
-    public void onFailure(final HttpClientErrorException e) {
+    public void onFailure(HttpClientErrorException e) {
         this.mainActivity.runOnUiThread(() -> {
             alertDialog.setMessage(e.getResponseBodyAsString());
             alertDialog.show();
