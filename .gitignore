@@ -1,3 +1,14 @@
+*.tmp
+
+# Word temporary
+~$*.doc*
+
+# Excel temporary
+~$*.xls*
+
+# Excel Backup File
+*.xlk
+
 # Ignore Gradle GUI config
 gradle-app.setting
 
